@@ -58,11 +58,44 @@ if ($("#espresso-menu-name").value === "") {
     }
 ```
 
-// TODO 메뉴 수정
-// 이벤트 위임 기능을 사용
-// - [ o ] 메뉴이 수정 버튼을 눌러 메큐 이름을 수정할 수 있다
-// - [ o ] 메뉴 수정시 브라우저에게 제공하는 `prompt` 인터페이스를 활용한다.
+### TODO 메뉴 수정
+### 이벤트 위임 기능을 사용
+### - 7. 메뉴이 수정 버튼을 눌러 메큐 이름을 수정할 수 있다
+### - 8. 메뉴 수정시 브라우저에게 제공하는 `prompt` 인터페이스를 활용한다.
 
-// todo 메뉴 삭제
-// - [ o ] 메뉴 삭제 버튼을 이용하여 메뉴 삭제할 수 있다.
-// - [ o ] 메뉴 수정시 브라우저에게 제공하는 `confirm` 인터페이스를 활용한다.
+✨ .(7, 8) - 내가 구현한 방법.
+```JavaScript
+// 현재 추가하고 있는대 <li>~</li>는 data매서드를 이용한 data-menu-id 변수를 이용중이다. 이변수에 값으로 우리는 index를 쓰고 있습니다.
+// 때문에 해당 인덱스로 li태그를 접근할 수 있습니다.
+const menuId = e.target.closest("li").dataset.menuId;  // 위의 원리로 인덱스 접근
+
+// 이벤트가 발생한 부분에서 가장 가까운 태그를 찾을 수 있는 매서드가 존재한다 => closetst
+// 가장 가까운 li를 찾은 후 그 li안에서 menu-name클래스를 가지는 것을 찾는 원리
+const $menuName = e.target.closest("li").querySelector(".menu-name");
+// prompt 인터페이스 이용 + $menuName.innerText을 넣음으로서 수정전 데이터 확인까지
+const newMenuName = prompt("수정: ", $menuName.innerText);
+
+// 배열 수정
+this.menu[menuId].name = newMenuName;
+// 웹 페이지 수정
+menuName.innerText = newMenuName;
+```
+
+
+### todo 메뉴 삭제
+### - 9. 메뉴 삭제 버튼을 이용하여 메뉴 삭제할 수 있다.
+### - 10. 메뉴 수정시 브라우저에게 제공하는 `confirm` 인터페이스를 활용한다.
+
+```js
+// confirm을 통해 체크
+const response = confirm("리얼 삭제?");
+if (response) {
+      // 위와 같은 원리
+      const menuId = e.target.closest("li").dataset.menuId;
+      // splice를 이용하여 해당 id 1개만 배열에서 제외시키는것 => 결론 적으로 제거 효과가 되게 구현
+      this.menu.splice(menuId, 1)
+      // 웹 페이지에서 해당 태그 제거. remove()매서드를 이용하여 쉽게 
+      e.target.closest("li").remove();
+    }
+```
+
